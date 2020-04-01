@@ -77,7 +77,7 @@ public class CorsoDAO {
 	 */
 	public List<Studente> getStudentiIscrittiAlCorso(Corso corso) {
 		
-		final String sql = "SELECT s.matricola, s.cognome, s.nome, s.CDS FROM studente AS s, corso AS c, iscrizione AS i WHERE c.codins = ? AND i.codins = c.codins AND i.matricola = s.matricola";
+		final String sql = "SELECT s.matricola, s.cognome, s.nome, s.CDS FROM studente s, corso c, iscrizione i WHERE c.codins =? AND i.codins = c.codins AND i.matricola = s.matricola";
 
 		List<Studente> studentiIscritti = new LinkedList<>();
 
@@ -117,9 +117,28 @@ public class CorsoDAO {
 	 * Data una matricola ed il codice insegnamento, iscrivi lo studente al corso.
 	 */
 	public boolean inscriviStudenteACorso(Studente studente, Corso corso) {
-		// TODO
-		// ritorna true se l'iscrizione e' avvenuta con successo
-		return false;
+		
+		final String sql = "INSERT INTO iscrizione (matricola,codins) VALUES (?,?)";
+		boolean iscrivistudente = false;
+		try {
+			Connection conn = ConnectDB.getConnection();
+			PreparedStatement st = conn.prepareStatement(sql);
+			st.setString(1, studente.getMatricola());
+			st.setString(2, corso.getCodice());
+			ResultSet rs = st.executeQuery();
+
+			
+
+			conn.close();
+			
+			iscrivistudente = true;
+			
+
+		} catch (SQLException e) {
+			// e.printStackTrace();
+			throw new RuntimeException("Errore Db", e);
+		}
+		return iscrivistudente;
 	}
 
 }

@@ -13,6 +13,7 @@
 package it.polito.tdp.lab04;
 
 import java.net.URL;
+import java.sql.SQLException;
 import java.util.ResourceBundle;
 
 import it.polito.tdp.lab04.model.Corso;
@@ -73,34 +74,93 @@ public class FXMLController {
     @FXML
     void doIscrizione(ActionEvent event) {
 
+    	txtRisultati.clear();
+    	
+    	try {
+    		model.iscriviStudenteAlCorso(txtMatricola.getText(), cBoxCorsi.getValue());
+    		txtRisultati.appendText("studente iscritto al corso: " + cBoxCorsi.getValue().getNome());
+    	}catch(NullPointerException n) {
+    		txtRisultati.appendText(n.getMessage());
+    	} catch (Exception e) {
+			txtRisultati.appendText(e.getMessage());
+		}
+    	
     }
 
     @FXML
     void doReset(ActionEvent event) {
 
+    	
+    	txtRisultati.clear();
+    	txtMatricola.clear();
+    	txtNome.clear();
+    	txtCognome.clear();
+    	
+    	
     }
 
     @FXML
     void doRicercaCorsiStudente(ActionEvent event) {
 
+    	txtRisultati.clear();
+    	
+    	if( cBoxCorsi.getValue()!= null){
+    		try {
+    		if(model.isIscritto(cBoxCorsi.getValue(),txtMatricola.getText())) {
+    			txtRisultati.appendText("studente già iscritto al corso!");
+    		}else {
+    			txtRisultati.appendText("studente non iscritto al corso: "+ cBoxCorsi.getValue().getNome());
+    		}
+    		}catch(Exception e) {
+    			txtRisultati.appendText(e.getMessage());
+    		}
+    		
+    	}
+    	
+    	else if(cBoxCorsi.getValue() == null) {
+    		
+    		try {
+        		for(Corso c : model.getCorsiStudente(txtMatricola.getText())) {
+        			txtRisultati.appendText(c.getCodice() + " " + c.getNome() + " " + c.getNumeroCrediti() + " " + c.getPeriodoDidattico() + "\n");
+        		}
+        	}catch(NullPointerException n) {
+        		txtRisultati.appendText(n.getMessage());
+        	} catch (Exception e) {
+    			
+    			txtRisultati.appendText(e.getMessage());
+    		}
+    	}
+    	
+    	
     }
 
     @FXML
     void doRicercaIscritti(ActionEvent event) {
-
-    	Corso c = cBoxCorsi.getValue();
     	
-    	for(Studente s : model.getIscrittiAlCorso(c)) {
-    		txtRisultati.appendText(s.getMatricola() + " " + s.getCognome() + " " + s.getNome() + " " + s.getCds() + "\n");
+    	txtRisultati.clear();
+    	
+    	try {
+    		Corso c = cBoxCorsi.getValue();
+    		for(Studente s : model.getIscrittiAlCorso(c)) {
+    			txtRisultati.appendText(s.getMatricola() + " " + s.getCognome() + " " + s.getNome() + " " + s.getCds() + "\n");
+    			
+    		}
+    	}catch(NullPointerException e) {
+    		txtRisultati.appendText(e.getMessage());
     		
     	}
     	
-    	
+		
+		
     	
     }
 
     @FXML
     void doRiempimento(ActionEvent event) {
+    	
+    	txtRisultati.clear();
+    	txtNome.clear();
+    	txtCognome.clear();
     	
     	try {
     		txtNome.appendText(model.getNome(txtMatricola.getText()));
