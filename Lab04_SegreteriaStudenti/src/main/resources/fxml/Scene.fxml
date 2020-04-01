@@ -13,6 +13,7 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
 
 <BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polito.tdp.lab04.FXMLController">
    <top>
@@ -112,10 +113,13 @@
             </GridPane>
             <HBox alignment="CENTER">
                <children>
-                  <TextArea fx:id="txtRisultati" HBox.hgrow="ALWAYS">
+                  <TextArea fx:id="txtRisultati" depthTest="ENABLE" editable="false" wrapText="true" HBox.hgrow="ALWAYS">
                      <HBox.margin>
                         <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
                      </HBox.margin>
+                     <font>
+                        <Font name="Courier New" size="11.0" />
+                     </font>
                   </TextArea>
                </children>
             </HBox>

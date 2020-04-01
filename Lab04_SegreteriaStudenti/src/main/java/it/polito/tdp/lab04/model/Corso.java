@@ -35,6 +35,11 @@ public class Corso {
 		return nome;
 	}
 	
+	public String infoCorso() {
+		
+		return String.format("%-10s %-5s %-50s %-1s ", codice,numeroCrediti,nome,periodoDidattico);
+	}
+	
 	
 
 }

@@ -121,7 +121,7 @@ public class FXMLController {
     		
     		try {
         		for(Corso c : model.getCorsiStudente(txtMatricola.getText())) {
-        			txtRisultati.appendText(c.getCodice() + " " + c.getNome() + " " + c.getNumeroCrediti() + " " + c.getPeriodoDidattico() + "\n");
+        			txtRisultati.appendText(c.infoCorso() + "\n");
         		}
         	}catch(NullPointerException n) {
         		txtRisultati.appendText(n.getMessage());
@@ -142,7 +142,7 @@ public class FXMLController {
     	try {
     		Corso c = cBoxCorsi.getValue();
     		for(Studente s : model.getIscrittiAlCorso(c)) {
-    			txtRisultati.appendText(s.getMatricola() + " " + s.getCognome() + " " + s.getNome() + " " + s.getCds() + "\n");
+    			txtRisultati.appendText(s.toString() + "\n" );
     			
     		}
     	}catch(NullPointerException e) {
@@ -196,6 +196,7 @@ public class FXMLController {
 	public void setCbox() {
 		
 		cBoxCorsi.getItems().addAll(model.getNomiCorsi());
+		cBoxCorsi.getItems().add(0, null);
 		
 	}
     

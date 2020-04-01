@@ -33,7 +33,7 @@ public class Studente {
 	
 	public String toString() {
 		
-		return matricola + " " + cognome + " " + nome + " " + cds;
+		return String.format("%-20s %-20s %-20s %-20s", matricola,cognome,nome,cds);
 	}
 	
 
