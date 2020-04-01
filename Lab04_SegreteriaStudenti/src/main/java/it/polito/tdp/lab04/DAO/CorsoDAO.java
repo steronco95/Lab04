@@ -34,8 +34,11 @@ public class CorsoDAO {
 				String nome = rs.getString("nome");
 				int periodoDidattico = rs.getInt("pd");
 
-				System.out.println(codins + " " + numeroCrediti + " " + nome + " " + periodoDidattico);
-
+//				System.out.println(codins + " " + numeroCrediti + " " + nome + " " + periodoDidattico);
+				
+				Corso c = new Corso(codins,numeroCrediti,nome,periodoDidattico);
+				corsi.add(c);
+				
 				// Crea un nuovo JAVA Bean Corso
 				// Aggiungi il nuovo oggetto Corso alla lista corsi
 			}
@@ -55,15 +58,59 @@ public class CorsoDAO {
 	/*
 	 * Dato un codice insegnamento, ottengo il corso
 	 */
-	public void getCorso(Corso corso) {
+	public Corso getCorso(Corso corso) {
 		// TODO
+		Corso c = null;
+		
+		for(Corso temp : this.getTuttiICorsi()) {
+			if(temp.equals(corso)) {
+				c = temp;
+				break;
+			}
+		}
+		
+		return c;
 	}
 
 	/*
 	 * Ottengo tutti gli studenti iscritti al Corso
 	 */
-	public void getStudentiIscrittiAlCorso(Corso corso) {
-		// TODO
+	public List<Studente> getStudentiIscrittiAlCorso(Corso corso) {
+		
+		final String sql = "SELECT s.matricola, s.cognome, s.nome, s.CDS FROM studente AS s, corso AS c, iscrizione AS i WHERE c.codins = ? AND i.codins = c.codins AND i.matricola = s.matricola";
+
+		List<Studente> studentiIscritti = new LinkedList<>();
+
+		try {
+			Connection conn = ConnectDB.getConnection();
+			PreparedStatement st = conn.prepareStatement(sql);
+			st.setString(1, corso.getCodice());
+			ResultSet rs = st.executeQuery();
+
+			while (rs.next()) {
+
+				String matricola = rs.getString("matricola");
+				String cognome = rs.getString("cognome");
+				String nome = rs.getString("nome");
+				String cds = rs.getString("CDS");
+
+//				System.out.println(codins + " " + numeroCrediti + " " + nome + " " + periodoDidattico);
+				
+				Studente s = new Studente(matricola,cognome,nome,cds);
+				studentiIscritti.add(s);
+				
+				
+			}
+
+			conn.close();
+			
+			return studentiIscritti;
+			
+
+		} catch (SQLException e) {
+			// e.printStackTrace();
+			throw new RuntimeException("Errore Db", e);
+		}
 	}
 
 	/*
